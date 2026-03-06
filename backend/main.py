@@ -3,6 +3,9 @@ import shutil
 import os
 import fitz  # PyMuPDF
 
+# Import skill detection
+from skills import extract_skills
+
 app = FastAPI()
 
 UPLOAD_FOLDER = "uploads"
@@ -37,7 +40,7 @@ def home():
 @app.post("/upload")
 async def upload_resume(file: UploadFile = File(...)):
     """
-    Upload resume and extract text from it
+    Upload resume, extract text, and detect skills
     """
 
     file_path = os.path.join(UPLOAD_FOLDER, file.filename)
@@ -49,8 +52,12 @@ async def upload_resume(file: UploadFile = File(...)):
     # Extract text from resume
     extracted_text = extract_text_from_pdf(file_path)
 
+    # Detect skills from resume text
+    detected_skills = extract_skills(extracted_text)
+
     return {
         "filename": file.filename,
         "status": "uploaded successfully",
-        "text_preview": extracted_text[:500]  # first 500 characters
+        "detected_skills": detected_skills,
+        "text_preview": extracted_text[:500]  # preview first 500 chars
     }
