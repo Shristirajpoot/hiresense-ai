@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>HireSense AI</title>
+</head>
+
+<body>
+
+<h2>HireSense AI Resume Analyzer</h2>
+
+<input type="file" id="resumeFile">
+
+<br><br>
+
+<input type="text" id="jobRole" placeholder="Enter job role">
+
+<br><br>
+
+<button onclick="uploadResume()">Analyze Resume</button>
+
+<h3>Result:</h3>
+
+<pre id="result"></pre>
+
+<script>
+
+async function uploadResume() {
+
+    const fileInput = document.getElementById("resumeFile")
+    const jobRole = document.getElementById("jobRole").value
+
+    const formData = new FormData()
+    formData.append("file", fileInput.files[0])
+
+    const response = await fetch("http://127.0.0.1:8000/upload", {
+        method: "POST",
+        body: formData
+    })
+
+    const data = await response.json()
+
+    document.getElementById("result").textContent =
+        JSON.stringify(data, null, 2)
+}
+
+</script>
+
+</body>
+</html>
