@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <title>HireSense AI</title>
+<title>HireSense AI</title>
 </head>
 
 <body>
@@ -18,32 +19,36 @@
 
 <button onclick="uploadResume()">Analyze Resume</button>
 
-<h3>Result:</h3>
+<h3>Result</h3>
 
 <pre id="result"></pre>
 
 <script>
 
-async function uploadResume() {
+async function uploadResume(){
 
-    const fileInput = document.getElementById("resumeFile")
-    const jobRole = document.getElementById("jobRole").value
+const fileInput = document.getElementById("resumeFile")
+const jobRole = document.getElementById("jobRole").value
 
-    const formData = new FormData()
-    formData.append("file", fileInput.files[0])
+const formData = new FormData()
 
-    const response = await fetch("http://127.0.0.1:8000/upload", {
-        method: "POST",
-        body: formData
-    })
+formData.append("file", fileInput.files[0])
+formData.append("job_role", jobRole)
 
-    const data = await response.json()
+const response = await fetch("http://127.0.0.1:8000/upload",{
+method:"POST",
+body:formData
+})
 
-    document.getElementById("result").textContent =
-        JSON.stringify(data, null, 2)
+const data = await response.json()
+
+document.getElementById("result").textContent =
+JSON.stringify(data,null,2)
+
 }
 
 </script>
 
 </body>
+
 </html>
